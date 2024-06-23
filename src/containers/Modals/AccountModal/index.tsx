@@ -1,20 +1,12 @@
 import React from "react";
-import {
-  Modal,
-  Group,
-  Button,
-  Avatar,
-  Text,
-  Divider,
-  ModalProps,
-  Paper,
-  Badge,
-} from "@mantine/core";
+import type { ModalProps } from "@mantine/core";
+import { Modal, Group, Button, Avatar, Text, Divider, Paper, Badge } from "@mantine/core";
 import { IoRocketSharp } from "react-icons/io5";
+import { gaEvent } from "src/lib/utils/gaEvent";
 import useModal from "src/store/useModal";
 import useUser from "src/store/useUser";
 
-export const AccountModal: React.FC<ModalProps> = ({ opened, onClose }) => {
+export const AccountModal = ({ opened, onClose }: ModalProps) => {
   const user = useUser(state => state.user);
   const setVisible = useModal(state => state.setVisible);
   const logout = useUser(state => state.logout);
@@ -60,9 +52,12 @@ export const AccountModal: React.FC<ModalProps> = ({ opened, onClose }) => {
       <Group justify="right">
         <Button
           variant="gradient"
-          gradient={{ from: "teal", to: "lime", deg: 105 }}
+          style={{ border: "1px solid #625BF6" }}
           leftSection={<IoRocketSharp />}
-          onClick={() => setVisible("premium")(true)}
+          onClick={() => {
+            setVisible("upgrade")(true);
+            gaEvent("Account Modal", "click upgrade premium");
+          }}
         >
           Upgrade to Premium
         </Button>

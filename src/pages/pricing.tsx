@@ -11,148 +11,212 @@ import {
   SegmentedControl,
   Center,
   Badge,
+  ThemeIcon,
+  Tooltip,
+  Anchor,
 } from "@mantine/core";
 import styled from "styled-components";
 import { AiOutlineInfoCircle } from "react-icons/ai";
-import { VscArrowRight } from "react-icons/vsc";
+import { FaArrowTrendDown } from "react-icons/fa6";
+import { IoIosCheckmarkCircle } from "react-icons/io";
+import { IoCheckmarkCircle } from "react-icons/io5";
+import { PiChats } from "react-icons/pi";
+import { VscArrowRight, VscLinkExternal } from "react-icons/vsc";
 import Layout from "src/layout/Layout";
-import useUser from "src/store/useUser";
+import { gaEvent } from "src/lib/utils/gaEvent";
 
-const purchaseLinks = {
-  monthly:
-    "https://herowand.lemonsqueezy.com/checkout/buy/ce30521f-c7cc-44f3-9435-995d3260ba22?enabled=67805",
-  annual:
-    "https://herowand.lemonsqueezy.com/checkout/buy/577928ea-fb09-4076-9307-3e5931b35ad0?enabled=82417",
+export const PRICING = {
+  MONTHLY: 6,
+  ANNUAL: 5,
 };
 
-const StyledPaperFree = styled(Paper)`
-  padding: 1.5em;
-  width: 400px;
-  border-radius: 1em;
-  border: 3px solid #e9e9e9;
-`;
+export const purchaseLinks = {
+  monthly:
+    "https://herowand.lemonsqueezy.com/checkout/buy/ce30521f-c7cc-44f3-9435-995d3260ba22?desc=0&enabled=67805",
+  annual:
+    "https://herowand.lemonsqueezy.com/checkout/buy/577928ea-fb09-4076-9307-3e5931b35ad0?desc=0&enabled=82417",
+};
 
-const StyledPaper = styled(Paper)`
+const StyledPaper = styled(Paper)<{ $highlight?: boolean } & any>`
   padding: 1.5em;
-  width: 400px;
-  background:
-    linear-gradient(white, white) padding-box,
-    linear-gradient(#ec85f5, #fb7eb0 28%, #fc9f96 53%, #ffbc88 78%, #ffc86a) border-box;
-  border-radius: 1em;
-  border: 3px solid transparent;
+  width: 350px;
+  border-radius: 4px;
+  border: 2px solid #e9e9e9;
+  ${({ $highlight }) => $highlight && "border-top: 3px solid #28c417;"}
+  background: white;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 `;
 
 export const PricingCards = () => {
-  const email = useUser(state => state.user?.email);
   const [isMonthly, setIsMonthly] = React.useState(true);
 
-  const paymentURL = (url: string) => {
-    if (email) url += `?checkout[email]=${email}`;
-    return url;
-  };
-
   return (
-    <Stack component="section" id="pricing" gap="0" align="center">
+    <Stack gap="0" align="center">
       <Center my="lg">
         <SegmentedControl
-          color="dark"
-          value={isMonthly ? "Monthly" : "Yearly"}
+          bg="gray.1"
+          color="white"
+          value={isMonthly ? "Monthly" : "Annual"}
           onChange={v => setIsMonthly(v === "Monthly")}
           size="md"
-          data={["Monthly", "Yearly"]}
+          data={["Monthly", "Annual"]}
           w={200}
-          radius="xl"
+          radius="lg"
+          styles={{ label: { color: "black" } }}
         />
       </Center>
-      <Flex gap="lg" wrap="wrap" justify="center" w="fit-content" p="lg" mx="auto" maw="100%">
-        <StyledPaperFree>
+      <Flex
+        gap="0"
+        wrap="wrap"
+        justify="center"
+        w="fit-content"
+        p={{
+          xs: 4,
+          md: 6,
+        }}
+        mx="auto"
+      >
+        <StyledPaper>
           <Flex justify="space-between">
             <Stack gap="0">
-              <Badge mb="lg" size="lg" variant="outline" color="gray.3" c="dark">
-                Free
-              </Badge>
+              <Text fw={500} size="xl" c="black">
+                Partner
+              </Text>
 
-              <Flex gap="xs" align="baseline">
-                <Text fz={32} fw="bold" c="dark">
-                  $0
-                </Text>
-                <Text fz="sm" fw={500} c="gray.8">
-                  / month
-                </Text>
-              </Flex>
+              <ThemeIcon variant="transparent" size={59}>
+                <PiChats color="black" size={50} />
+              </ThemeIcon>
               <Text fz="xs" c="gray.7">
-                billed {isMonthly ? "monthly" : "annually"}
+                Contact us for custom pricing
               </Text>
             </Stack>
           </Flex>
           <Button
-            component={Link}
-            prefetch={false}
-            href="/editor"
+            component="a"
+            color="green"
+            onClick={() => gaEvent("Pricing", "click partner plan")}
+            href="mailto:contact@jsoncrack.com"
+            target="_blank"
             size="lg"
-            radius="xl"
-            variant="outline"
-            color="dark"
+            radius="md"
             fullWidth
             my="md"
             rightSection={<VscArrowRight />}
           >
-            Sign Up
+            Contact Us
           </Button>
-          <Flex direction="column" justify="space-between" h={250}>
-            <List spacing="xs" size="sm" mt="lg" center icon="✦">
+          <Text mt="xs" fz="xs" c="dimmed">
+            Integrate JSON Crack into your applications and websites.
+          </Text>
+          <Flex direction="column" justify="space-between">
+            <List
+              spacing="md"
+              size="sm"
+              mt="xs"
+              c="black"
+              center
+              icon={<IoIosCheckmarkCircle color="green" size="20" />}
+            >
               <List.Item>
-                <Text c="gray.7" fw={500} fz="sm">
-                  Open Source
+                <Tooltip
+                  color="blue"
+                  label="Integrate premium graph visualization into your own website/apps using iframe"
+                  maw={350}
+                  multiline
+                >
+                  <Text
+                    c="gray.7"
+                    fw={600}
+                    fz="sm"
+                    style={{ textDecoration: "underline", textDecorationStyle: "dashed" }}
+                  >
+                    JSON Crack Premium Widget
+                  </Text>
+                </Tooltip>
+              </List.Item>
+              <List.Item>
+                <Text c="gray.7" fw={600} fz="sm">
+                  1 Domain / Plan
                 </Text>
               </List.Item>
               <List.Item>
-                <Text c="gray.7" fw={500} fz="sm">
-                  Graph & Tree visualizations
+                <Tooltip
+                  color="blue"
+                  label="Listen for events like node click, hover, center etc. Display your own UI"
+                  maw={350}
+                  multiline
+                >
+                  <Text
+                    c="gray.7"
+                    fw={600}
+                    fz="sm"
+                    style={{ textDecoration: "underline", textDecorationStyle: "dashed" }}
+                  >
+                    Events API
+                  </Text>
+                </Tooltip>
+              </List.Item>
+              <List.Item>
+                <Tooltip
+                  color="blue"
+                  label="Customize the look and feel of the editor matching with your own branding"
+                  maw={350}
+                  multiline
+                >
+                  <Text
+                    c="gray.7"
+                    fw={600}
+                    fz="sm"
+                    style={{ textDecoration: "underline", textDecorationStyle: "dashed" }}
+                  >
+                    Custom Theming
+                  </Text>
+                </Tooltip>
+              </List.Item>
+              <List.Item>
+                <Text c="gray.7" fw={600} fz="sm">
+                  White Labeling
                 </Text>
               </List.Item>
               <List.Item>
-                <Text c="gray.7" fw={500} fz="sm">
-                  Small size graph visualizations
+                <Text c="gray.7" fw={600} fz="sm">
+                  Onboarding and engineering support
                 </Text>
               </List.Item>
               <List.Item>
-                <Text c="gray.7" fw={500} fz="sm">
-                  Download as image
-                </Text>
-              </List.Item>
-              <List.Item>
-                <Text c="gray.7" fw={500} fz="sm">
-                  Generate types
-                </Text>
-                <Text c="dimmed" fz="xs">
-                  TypeScript, Go, Rust, JSON Schema and more...
-                </Text>
-              </List.Item>
-              <List.Item>
-                <Text c="gray.7" fw={500} fz="sm">
-                  Multiple format support
-                </Text>
-                <Text c="dimmed" fz="xs">
-                  JSON, YAML, TOML, XML, CSV, and more...
+                <Text c="gray.7" fw={600} fz="sm">
+                  High-priority customer support
                 </Text>
               </List.Item>
             </List>
           </Flex>
-        </StyledPaperFree>
-        <StyledPaper>
+        </StyledPaper>
+        <StyledPaper $highlight>
           <Flex justify="space-between">
             <Stack gap="0">
-              <Badge mb="lg" size="lg" variant="outline" color="gray.3" c="dark" leftSection="✦">
-                Premium
-              </Badge>
+              <Flex align="center">
+                <Text fw={500} size="xl" c="black">
+                  Premium
+                </Text>
+                {!isMonthly && (
+                  <Badge
+                    size="lg"
+                    variant="light"
+                    color="#ff0000"
+                    ml="sm"
+                    leftSection={<FaArrowTrendDown />}
+                  >
+                    16%
+                  </Badge>
+                )}
+              </Flex>
 
               <Flex gap="xs" align="baseline">
-                <Text fz={32} fw="bold" c="dark">
-                  ${isMonthly ? "6" : "5"}
+                <Text fz={38} fw="bold" c="black">
+                  ${isMonthly ? PRICING.MONTHLY : PRICING.ANNUAL}
                 </Text>
-                <Text fz="sm" fw={500} c="gray.8">
-                  / month
+                <Text fz="md" fw={500} c="gray.6">
+                  / mo
                 </Text>
               </Flex>
               <Text fz="xs" c="gray.7">
@@ -162,55 +226,192 @@ export const PricingCards = () => {
           </Flex>
           <Button
             component="a"
-            href={paymentURL(isMonthly ? purchaseLinks.monthly : purchaseLinks.annual)}
+            color="green"
+            onClick={() => gaEvent("Pricing", "click upgrade premium")}
+            href={isMonthly ? purchaseLinks.monthly : purchaseLinks.annual}
             target="_blank"
             size="lg"
-            radius="xl"
-            color="green"
+            radius="md"
             fullWidth
             my="md"
             rightSection={<VscArrowRight />}
           >
-            Start 3 Days Free Trial
+            Get Started
           </Button>
-          <Flex direction="column" justify="space-between" h={250}>
-            <List spacing="xs" size="sm" mt="lg" center icon="✦">
+          <Text mt="xs" fz="xs" c="dimmed">
+            Designed for individuals who works with data regularly and wants to save time.
+          </Text>
+          <Flex direction="column" justify="space-between">
+            <List
+              spacing="md"
+              size="sm"
+              mt="xs"
+              c="black"
+              center
+              icon={<IoCheckmarkCircle color="green" size="20" />}
+            >
               <List.Item>
-                <Text c="gray.7" fw={500} fz="sm">
-                  Graphs: 5X faster, compact and smooth
+                <Tooltip
+                  color="blue"
+                  label="Visualize up to ~4 MB or above depending on your hardware"
+                  maw={350}
+                  multiline
+                  withArrow
+                >
+                  <Text
+                    c="gray.7"
+                    fw={600}
+                    fz="sm"
+                    style={{ textDecoration: "underline", textDecorationStyle: "dashed" }}
+                  >
+                    Large data support
+                  </Text>
+                </Tooltip>
+              </List.Item>
+              <List.Item>
+                <Tooltip
+                  color="blue"
+                  label="Load data 5x faster and 50% smaller graph size. Only see what matters."
+                  maw={350}
+                  multiline
+                  withArrow
+                >
+                  <Text
+                    c="gray.7"
+                    fw={600}
+                    fz="sm"
+                    style={{ textDecoration: "underline", textDecorationStyle: "dashed" }}
+                  >
+                    Compact Graphs & High Performance
+                  </Text>
+                </Tooltip>
+              </List.Item>
+              <List.Item>
+                <Text c="gray.7" fw={600} fz="sm">
+                  Compare Data Differences
                 </Text>
               </List.Item>
               <List.Item>
-                <Text c="gray.7" fw={500} fz="sm">
-                  Compare data differences on graphs
-                </Text>
+                <Tooltip
+                  color="blue"
+                  label="Edit nodes directly on the graph reflecting to the data"
+                  maw={350}
+                  multiline
+                >
+                  <Text
+                    c="gray.7"
+                    fw={600}
+                    fz="sm"
+                    style={{ textDecoration: "underline", textDecorationStyle: "dashed" }}
+                  >
+                    Edit Nodes
+                  </Text>
+                </Tooltip>
               </List.Item>
               <List.Item>
-                <Text c="gray.7" fw={500} fz="sm">
-                  Edit data directly on visualizations
-                </Text>
-              </List.Item>
-              <List.Item>
-                <Text c="gray.7" fw={500} fz="sm">
+                <Text c="gray.7" fw={600} fz="sm">
                   Built-in tabs for multiple documents
                 </Text>
               </List.Item>
               <List.Item>
-                <Text c="gray.7" fw={500} fz="sm">
-                  Save up to 200 documents in the cloud
+                <Text c="gray.7" fw={600} fz="sm">
+                  Store 200 documents
                 </Text>
               </List.Item>
               <List.Item>
-                <Text c="gray.7" fw={500} fz="sm">
-                  Visualize up to 4 MBs
+                <Text c="gray.7" fw={600} fz="sm">
+                  AI powered data filter
                 </Text>
               </List.Item>
+            </List>
+          </Flex>
+        </StyledPaper>
+        <StyledPaper>
+          <Flex justify="space-between">
+            <Stack gap="0">
+              <Text fw={500} size="xl" c="black">
+                Free
+              </Text>
+              <Text fz={38} fw="bold" c="black">
+                $0
+              </Text>
+              <Text fz="xs" c="gray.7">
+                billed {isMonthly ? "monthly" : "annually"}
+              </Text>
+            </Stack>
+          </Flex>
+          <Button
+            component={Link}
+            href="/editor"
+            prefetch={false}
+            size="lg"
+            radius="md"
+            variant="outline"
+            color="dark"
+            fullWidth
+            my="md"
+            rightSection={<VscArrowRight />}
+          >
+            Free forever
+          </Button>
+          <Text mt="xs" fz="xs" c="dimmed">
+            For individuals who occasionally work with data and doesn&apos;t require advanced
+            features.
+          </Text>
+          <Flex direction="column" justify="space-between">
+            <List
+              spacing="md"
+              size="sm"
+              mt="lg"
+              c="black"
+              center
+              icon={<IoIosCheckmarkCircle color="green" size="20" />}
+            >
               <List.Item>
-                <Text c="gray.7" fw={500} fz="sm">
-                  Join alpha test of AI
-                </Text>
-                <Text c="dimmed" fz="xs">
-                  (10 credits/day)
+                <Tooltip
+                  color="blue"
+                  label="Visualize up to ~300 KB depending on your hardware"
+                  maw={350}
+                  multiline
+                  withArrow
+                >
+                  <Text
+                    c="gray.7"
+                    fw={600}
+                    fz="sm"
+                    style={{ textDecoration: "underline", textDecorationStyle: "dashed" }}
+                  >
+                    Basic data size support
+                  </Text>
+                </Tooltip>
+              </List.Item>
+              <List.Item>
+                <Tooltip
+                  color="blue"
+                  label={
+                    <Flex align="center" gap="xs">
+                      Open source and free to use
+                      <VscLinkExternal />
+                    </Flex>
+                  }
+                  maw={350}
+                  multiline
+                >
+                  <Anchor
+                    href="https://github.com/AykutSarac/jsoncrack.com"
+                    target="_blank"
+                    c="gray.7"
+                    fw={600}
+                    fz="sm"
+                    style={{ textDecoration: "underline", textDecorationStyle: "dashed" }}
+                  >
+                    Open Source
+                  </Anchor>
+                </Tooltip>
+              </List.Item>
+              <List.Item>
+                <Text c="gray.7" fw={600} fz="sm">
+                  Store 25 documents
                 </Text>
               </List.Item>
             </List>
@@ -229,10 +430,12 @@ const Pricing = () => {
       </Head>
       <Layout>
         <PricingCards />
-        <Text pt="sm" size="sm" c="dimmed" style={{ textAlign: "center" }}>
-          <AiOutlineInfoCircle style={{ marginRight: "4px" }} />
-          Payment email must be matching with the account registered to the JSON Crack.
-        </Text>
+        <Flex pt="sm" c="dimmed" justify="center" align="center" gap={4}>
+          <AiOutlineInfoCircle />
+          <Text size="sm">
+            Payment email must be matching with the account registered to the JSON Crack.
+          </Text>
+        </Flex>
       </Layout>
     </>
   );

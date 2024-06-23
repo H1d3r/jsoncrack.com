@@ -1,15 +1,11 @@
-import Document, {
-  Html,
-  Head,
-  Main,
-  NextScript,
-  DocumentContext,
-  DocumentInitialProps,
-} from "next/document";
+import type { DocumentContext, DocumentInitialProps } from "next/document";
+import Document, { Html, Head, Main, NextScript } from "next/document";
+import Script from "next/script";
+import { ColorSchemeScript } from "@mantine/core";
 import { ServerStyleSheet } from "styled-components";
 
 const metatags = Object.freeze({
-  title: "JSON Crack | Best JSON Visualizer, Formatter and Viewer for everyone",
+  title: "JSON Crack | Best JSON Viewer, Formatter and Visualizer for everyone",
   image: "https://jsoncrack.com/assets/jsoncrack.png",
 });
 
@@ -57,10 +53,19 @@ class MyDocument extends Document {
           <meta property="twitter:url" content="https://jsoncrack.com" key="twurl" />
           <meta name="twitter:title" content={metatags.title} key="twtitle" />
           <meta name="twitter:image" content={metatags.image} key="twimage" />
+          <ColorSchemeScript />
         </Head>
         <body>
           <Main />
           <NextScript />
+          <Script
+            id="lemon-squeezy-affiliate"
+            strategy="afterInteractive"
+            dangerouslySetInnerHTML={{
+              __html: 'window.lemonSqueezyAffiliateConfig = { store: "herowand" };',
+            }}
+          />
+          <Script src="https://lmsqueezy.com/affiliate.js" strategy="afterInteractive" />
         </body>
       </Html>
     );

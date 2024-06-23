@@ -1,6 +1,5 @@
 import { create } from "zustand";
-import { Modal } from "src/containers/Modals";
-import { gaEvent } from "src/lib/utils/gaEvent";
+import type { Modal } from "src/containers/Modals";
 import useUser from "./useUser";
 
 type ModalState = {
@@ -20,10 +19,9 @@ const initialStates: ModalState = {
   node: false,
   share: false,
   login: false,
-  premium: false,
+  upgrade: false,
   jwt: false,
   schema: false,
-  cancelPremium: false,
   review: false,
   jq: false,
   type: false,
@@ -40,7 +38,6 @@ const useModal = create<ModalState & ModalActions>()(set => ({
       return set({ login: true });
     }
 
-    if (visible) gaEvent("modal", `open ${modal}`);
     set({ [modal]: visible });
   },
 }));

@@ -1,7 +1,8 @@
 import React from "react";
-import { Modal, Stack, Button, Text, ModalProps } from "@mantine/core";
+import type { ModalProps } from "@mantine/core";
+import { Modal, Stack, Button, Text } from "@mantine/core";
 
-export const LoginModal: React.FC<ModalProps> = ({ opened, onClose }) => {
+export const LoginModal = ({ opened, onClose }: ModalProps) => {
   return (
     <Modal title="Sign In" opened={opened} onClose={onClose} centered>
       <Stack py="sm">
