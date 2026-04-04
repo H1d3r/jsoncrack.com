@@ -19,7 +19,7 @@
     "@mantine/hooks": "^8.3.18",
     "@monaco-editor/react": "^4.7.0",
     "allotment": "^1.20.5",
-    "fast-xml-parser": "5.5.6",
+    "fast-xml-parser": "5.5.7",
     "gofmt.js": "0.0.2",
     "html-to-image": "1.11.13",
     "jq-web": "0.6.2",
