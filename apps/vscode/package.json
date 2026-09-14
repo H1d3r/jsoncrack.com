@@ -93,8 +93,8 @@
     "@mantine/hooks": "^8.3.18",
     "@trivago/prettier-plugin-sort-imports": "^6.0.2",
     "@types/node": "^25.9.5",
-    "@types/react": "19.2.18",
-    "@types/react-dom": "19.2.4",
+    "@types/react": "catalog:",
+    "@types/react-dom": "catalog:",
     "@types/vscode": "^1.100.0",
     "@typescript-eslint/eslint-plugin": "^8.67.0",
     "@typescript-eslint/parser": "^8.67.0",
@@ -113,8 +113,8 @@
   },
   "dependencies": {
     "jsoncrack-react": "workspace:*",
-    "react": "19.2.8",
-    "react-dom": "19.2.8",
+    "react": "catalog:",
+    "react-dom": "catalog:",
     "shiki": "^4.4.3"
   },
   "repository": {
