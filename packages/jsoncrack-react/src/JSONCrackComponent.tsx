@@ -265,6 +265,17 @@ export const JSONCrack = forwardRef<JSONCrackRef, JSONCrackProps>(
       onCollapseChangeRef.current = onCollapseChange;
     }, [onCollapseChange]);
 
+    // Skip the initial mount so only actual changes are reported.
+    const hasReportedCollapseRef = useRef(false);
+    useEffect(() => {
+      if (isControlled) return;
+      if (!hasReportedCollapseRef.current) {
+        hasReportedCollapseRef.current = true;
+        return;
+      }
+      onCollapseChangeRef.current?.(internalCollapsedPaths);
+    }, [internalCollapsedPaths, isControlled]);
+
     // Prune internally-held collapsed paths that no longer resolve to an
     // object/array in the current data (e.g., after a JSON edit).
     useEffect(() => {
@@ -347,11 +358,9 @@ export const JSONCrack = forwardRef<JSONCrackRef, JSONCrackProps>(
           controlledOnToggle?.(path);
           return;
         }
-        setInternalCollapsedPaths(prev => {
-          const next = prev.includes(key) ? prev.filter(p => p !== key) : [...prev, key];
-          onCollapseChangeRef.current?.(next);
-          return next;
-        });
+        setInternalCollapsedPaths(prev =>
+          prev.includes(key) ? prev.filter(p => p !== key) : [...prev, key]
+        );
       },
       [isControlled, controlledOnToggle, findCollapseButton]
     );
@@ -389,12 +398,10 @@ export const JSONCrack = forwardRef<JSONCrackRef, JSONCrackProps>(
             }
           }
           setInternalCollapsedPaths(next);
-          onCollapseChangeRef.current?.(next);
         },
         expandAll: () => {
           if (isControlled) return;
           setInternalCollapsedPaths([]);
-          onCollapseChangeRef.current?.([]);
         },
         getCollapsedPaths: () => collapsedPathsRef.current ?? [],
       }),
